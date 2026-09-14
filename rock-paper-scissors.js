@@ -1,88 +1,72 @@
+// 1. STATE VARIABLES FIRST
 let userScore = 0;
 let computerScore = 0;
+let roundCounter = 0;
 
-const humanSelection = "rock";
-const computerSelection = getComputerChoice();
-
-console.log("Human:", humanSelection);
-console.log("Computer:", computerSelection);
-
+// 2. FUNCTION DEFINITIONS
 function getComputerChoice() {
   const number = Math.floor(Math.random() * 3);
-  if (number === 0) {
-    console.log("rock");
-    return "rock";
-  }
-
-  if (number === 1) {
-    console.log("paper");
-    return "paper";
-  }
-
-  console.log("scissors");
+  if (number === 0) return "rock";
+  if (number === 1) return "paper";
   return "scissors";
 }
 
 function getUserChoice() {
-  const solution = prompt("Chose by typing: rock, paper or scissors");
+  const rawInput = prompt("Choose by typing: rock, paper or scissors");
+  if (!rawInput) return null; // Handles clicking "Cancel"
+
+  const solution = rawInput.trim().toLowerCase();
   if (solution === "rock" || solution === "paper" || solution === "scissors") {
-    console.log(solution);
     return solution;
   }
-  console.log("You need to chose from: rock, paper or scissors!");
+  console.log("You need to choose from: rock, paper or scissors!");
+  return null;
 }
 
 function playRound(userChoice, computerChoice) {
-  if (userChoice === "rock" && computerChoice === "paper") {
-    console.log("You lose, paper beats rock!");
-    computerScore++;
+  if (!userChoice || !computerChoice) return;
+
+  if (userChoice === computerChoice) {
+    console.log(`Draw, ${userChoice} vs ${computerChoice}!`);
+    return;
   }
-  if (userChoice === "rock" && computerChoice === "scissors") {
-    console.log("You win, rock beats scissors!");
+
+  if (
+    (userChoice === "rock" && computerChoice === "scissors") ||
+    (userChoice === "paper" && computerChoice === "rock") ||
+    (userChoice === "scissors" && computerChoice === "paper")
+  ) {
     userScore++;
-  }
-  if (userChoice === "rock" && computerChoice === "rock") {
-    console.log("Draw, rock vs rock!");
-  }
-  if (userChoice === "scissors" && computerChoice === "paper") {
-    console.log("You win, scissors beats rock!");
-    userScore++;
-  }
-  if (userChoice === "scissors" && computerChoice === "scissors") {
-    console.log("Draw, scissors vs scissors!");
-  }
-  if (userChoice === "scissors" && computerChoice === "rock") {
-    console.log("You lose, rock beats scissors!");
+    console.log(`You win, ${userChoice} beats ${computerChoice}!`);
+  } else {
     computerScore++;
+    console.log(`You lose, ${computerChoice} beats ${userChoice}!`);
   }
-  if (userChoice === "paper" && computerChoice === "paper") {
-    console.log("Draw, paper vs paper!");
+}
+// to play game we need to play 5 rounds, loop from 1-5 or 0-4, each round we need to keep track and update score.
+// We need to reset previous choices.
+
+//use round counter to see if we have completed number of rounds
+//after each round
+
+function playGame(roundCounter) {
+  while (roundCounter <= 4) {
+    const userSelection = getUserChoice();
+    const computerSelection = getComputerChoice();
+    playRound(userSelection, computerSelection);
+    roundCounter++;
+    console.log(
+      `Round: ${roundCounter} Score -> User: ${userScore} | Computer: ${computerScore}`,
+    );
   }
-  if (userChoice === "paper" && computerChoice === "scissors") {
-    console.log("You lose, scissors beats paper!");
-    computerScore++;
-  }
-  if (userChoice === "paper" && computerChoice === "rock") {
-    console.log("You win, paper beats rock!");
-    userScore++;
-  }
-  return true;
 }
 
-// function playGame () {
+// 3. EXECUTION AT THE VERY BOTTOM
 
-// console.log("Start, human score: " + humanScore + " computer score: " + computerScore);
-// for (let i = 0; i < 5; i++) {
-// console.log("Round: " + i+1 + ", human score: " + humanScore + " computer score: " + computerScore);
+// console.log("Human:", userSelection);
+// console.log("Computer:", computerSelection);
 
-// getHumanChoice(solution);
-// getComputerChoice();
-// playRound()
-// }
+// playRound(userSelection, computerSelection);
+// console.log(`Score -> User: ${userScore} | Computer: ${computerScore}`);
 
-// console.log("Final, human score: " + humanScore + " computer score: " + computerScore);
-
-// return (humanScore, computerScore);
-// }
-
-playRound(humanSelection, computerSelection);
+playGame(roundCounter);
