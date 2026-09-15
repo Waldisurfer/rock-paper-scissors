@@ -1,9 +1,7 @@
-// 1. STATE VARIABLES FIRST
 let userScore = 0;
 let computerScore = 0;
 let roundCounter = 0;
 
-// 2. FUNCTION DEFINITIONS
 function getComputerChoice() {
   const number = Math.floor(Math.random() * 3);
   if (number === 0) return "rock";
@@ -43,11 +41,6 @@ function playRound(userChoice, computerChoice) {
     console.log(`You lose, ${computerChoice} beats ${userChoice}!`);
   }
 }
-// to play game we need to play 5 rounds, loop from 1-5 or 0-4, each round we need to keep track and update score.
-// We need to reset previous choices.
-
-//use round counter to see if we have completed number of rounds
-//after each round
 
 function playGame(roundCounter) {
   while (roundCounter <= 4) {
@@ -61,12 +54,5 @@ function playGame(roundCounter) {
   }
 }
 
-// 3. EXECUTION AT THE VERY BOTTOM
-
-// console.log("Human:", userSelection);
-// console.log("Computer:", computerSelection);
-
-// playRound(userSelection, computerSelection);
-// console.log(`Score -> User: ${userScore} | Computer: ${computerScore}`);
 
 playGame(roundCounter);
